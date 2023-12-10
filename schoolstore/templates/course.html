@@ -1,0 +1,193 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<script src="https://unpkg.com/htmx.org@1.9.2"></script>
+
+<style>
+select {
+  appearance: none;
+  /* safari */
+  -webkit-appearance: none;
+  /* other styles for aesthetics */
+  width: 100%;
+  font-size: 1.15rem;
+  padding: 0.675em 6em 0.675em 1em;
+  background-color: #fff;
+  border: 1px solid #caced1;
+  border-radius: 0.25rem;
+  color: #000;
+  cursor: pointer;
+}
+.error {
+  padding: 20px;
+  background-color:red;
+  color:white;
+}
+.success {
+  padding: 20px;
+  background-color:green;
+  color:white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+</style>
+<div class="row">
+    <div class="col-lg-4"></div>
+
+    <div class="col-lg-4">
+        <br> <br>
+        {% if messages %}
+          {% for message in messages %}
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <div class="{{ message.tags }}" style="text-align:center">{{ message }}</div><br><br>
+            {% if message.tags == 'success' %}
+                <a href="{% url 'school:school' %}"><button class="btn btn-dark w-100 py-3 mt-10"  onclick = "Openform();">Home</button>
+                {% else %}
+                    <button class="btn btn-dark w-100 py-3 mt-10" type="submit" onclick = "Openform();">APPLY</button>
+            {% endif %}
+          {% endfor %}
+           <br><br>
+            </a>
+        {% else %}
+                <button class="btn btn-dark w-100 py-3 mt-10" type="submit" onclick = "Openform();">APPLY</button>
+       {% endif %}</div>
+        <div class="col-lg-4"></div>
+</div><br><br>
+{% if form.errors %}
+<div class="row" id="form1" >
+    {% else %}
+    <div class="row" id="form1" style="display:none">
+
+    {% endif %}
+
+<div class="col-lg-2"></div>
+<div class="col-lg-8 mb-0   wow fadeInUp" style="" data-wow-delay="0.1s">
+                    <div class="bg-primary text-center p-5">
+                        <h1 class="mb-4">APPLY</h1>
+                        <form method="POST" action="{% url 'credential:apply' %}" data-course-url="{% url 'credential:load_course' %}" id="form" enctype="multipart/form-data">
+                         {% csrf_token %}
+
+<!--                            {{form.as_div}}-->
+                            <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <div class="form-floating">
+                                        {{form.name}}
+                                        <label for="name">Name</label>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-floating">
+                                        {{form.Dob}}
+                                        <label for="dob">dob</label>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-floating">
+                                        {{form.Age}}
+                                        <label for="age">AGE</label>
+                                    </div>
+                                </div>
+                                  <div class="col-sm-6">
+                                    <div class="">
+                                     {{form.Gender}}
+                                    </div>
+                                </div>
+                                  <div class="col-sm-6">
+                                    <div class="form-floating">
+                                         {{form.phone_number}}
+                                        <label for="phonenumber">Phone</label>
+                                        <p style="color:red"> {{ form.phone_number.errors }}</p>
+
+                                    </div>
+                                </div>
+                                 <div class="col-sm-6">
+                                    <div class="form-floating">
+                                        {{form.Email}}
+                                        <label for="email">Email</label>
+                                    </div>
+                                </div>
+                                 <div class="col-sm-6">
+                                    <div class="form-floating">
+                                        {{form.Address}}
+                                        <label for="address">Address</label>
+                                    </div>
+                                </div>
+                                 <div class="col-sm-6">
+                                    <div class="form-floating">
+
+                                        {{form.department}}
+
+                                    </div>
+                                </div>
+                                  <div class="col-sm-6">
+                                    <div class="form-floating">
+                                      {{form.course}}
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-floating">
+                                         {{form.Purpose}}
+                                    </div>
+                                </div>
+
+                                 <div class="col-sm-6">
+                                    <div class="">
+                                        {{form.Material}}
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-12">
+                                    <button class="btn btn-dark w-100 py-3" type="submit">Submit</button>
+                                </div>
+
+                        </form>
+                    </div>
+                </div>
+<div class="col-lg-2"></div>
+
+</div>
+<!--<script src="https://unpkg.com/htmx.org/dist/ext/head-support.js"></script>-->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+  <script>
+    $("#id_department").change(function () {
+      var url = $("#form").attr("data-course-url");
+      var departId = $(this).val();
+
+      $.ajax({
+        url: url,
+        data: {
+          'depart': departId
+        },
+        success: function (data) {
+          $("#id_course").html(data);
+        }
+      });
+
+    });
+  </script>
+<script>
+function Openform()
+{
+    document.getElementById('form1').style.display = '';
+}
+</script>
+{% endblock %}

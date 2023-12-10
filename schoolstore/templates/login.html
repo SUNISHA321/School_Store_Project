@@ -1,0 +1,46 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row">
+<div class="col-lg-2"></div>
+<div class="col-lg-8 mb-0   wow fadeInUp" style="" data-wow-delay="0.1s">
+                    <div class="bg-primary text-center p-5">
+                        <h1 class="mb-4">LOGIN</h1>
+                        <form method="POST" action="login" enctype="multipart/form-data">
+                         {% csrf_token %}
+                             {% for msg in messages %}
+                               <div class="alert">
+                                  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                                    {{msg}}
+                               </div>
+                                {% endfor %}
+                            <div class="row g-3">
+                                <div class="col-sm-12">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control border-0" id="username" name="username" placeholder="">
+                                        <label for="username">Username</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-floating">
+                                        <input type="password" class="form-control border-0" id="password" name="password" placeholder="">
+                                        <label for="password">Password</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <button class="btn btn-dark w-100 py-3" type="submit">LOGIN</button>
+                                </div>
+                                 <div class="col-6">
+                                    <a href="credentials/register"></a><button class="btn btn-dark w-100 py-3" type="submit">REGISTER</button></a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+<div class="col-lg-2"></div>
+
+</div>
+{% endblock %}
